@@ -85,7 +85,7 @@ object Tilengine {
 }
 
 class Tilengine {
-     //System.loadLibrary("TilengineJNI")
+  System.loadLibrary("TilengineJNI")
 
   // affine transform
   final class Affine(
