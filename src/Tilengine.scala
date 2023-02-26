@@ -79,8 +79,7 @@ object Tilengine {
   val TLN_OVERLAY_SHADOWMASK = 1 /*!< Shadow mask pattern */
   val TLN_OVERLAY_APERTURE = 2 /*!< Aperture grille pattern */
   val TLN_OVERLAY_SCANLINES = 3 /*!< Scanlines pattern */
-  val TLN_OVERLAY_CUSTOM =
-    4 /*!< User-provided when calling TLN_CreateWindow */
+  val TLN_OVERLAY_CUSTOM = 4 /*!< User-provided when calling TLN_CreateWindow */
   val TLN_MAX_OVERLAY = 5
 }
 
@@ -88,75 +87,72 @@ class Tilengine {
   System.loadLibrary("TilengineJNI")
 
   // affine transform
-  final class Affine(
-      angle: Float, // rotation
-      dx: Float, // translation
-      dy: Float, // translation
-      sx: Float, // scale
-      sy: Float // scale
-  )
+  final class Affine {
+    var angle: Float = _ // rotation
+    var dx, dy: Float = _ // translation
+    var sx, sy: Float = _ // scale
+  }
 
   // tile
-  final class Tile(
-      index: Short, // tile index
-      flags: Short // attributes
-  )
+  final class Tile {
+    var index: Short = _ // tile index
+    var flags: Short = _ // attributes
+  }
 
   // color strip
-  final class ColorStrip(
-      delay: Int, // time delay between frames
-      first: Short, // index of first color to cycle
-      count: Short, // number of colors in the cycle
-      dir: Byte // direction: 0=descending, 1=ascending
-  )
+  final class ColorStrip {
+    var delay: Int = _ // time delay between frames
+    var first: Short = _ // index of first color to cycle
+    var count: Short = _ // number of colors in the cycle
+    var dir: Byte = _ // direction: 0=descending, 1=ascending
+  }
 
-  // sequence info returned by GetSequenceInfo
-  final class SequenceInfo(
-      name: String, // sequence name
-      num_frames: Int // number of frames
-  )
+  // sequence info returned by GetSequenceInfo()
+  final class SequenceInfo {
+    var name: String = _ // sequence name
+    var num_frames: Int = _ // number of frames
+  }
 
-  // Sprite creation info for CreateSpriteset
-  final class SpriteData(
-      name: String, // entry name
-      x: Int, // horizontal position
-      y: Int, // vertical position
-      w: Int, // width
-      h: Int // height
-  )
+  // Sprite creation info for CreateSpriteset()
+  final class SpriteData {
+    var name: String = _ // entry name
+    var x: Int = _ // horizontal position
+    var y: Int = _ // vertical position
+    var w: Int = _ // width
+    var h: Int = _ // height
+  }
 
-  final class SpriteInfo(
-      offset: Int,
-      w: Int,
-      h: Int
-  )
+  final class SpriteInfo {
+    var offset: Int = _
+    var w, h: Int = _
+  }
 
-  // Tile information returned by GetLayerTile
-  final class TileInfo(
-      index: Short,
-      flags: Short,
-      row: Int,
-      col: Int,
-      xoffset: Int,
-      yoffset: Int,
-      color: Byte,
-      _type: Byte,
-      empty: Boolean
-  )
+  // Tile information returned by GetLayerTile()
+  final class TileInfo {
+    var index: Short = _
+    var flags: Short = _
+    var row: Int = _
+    var col: Int = _
+    var xoffset: Int = _
+    var yoffset: Int = _
+    var color: Byte = _
+    var _type: Byte = _
+    var empty: Boolean = _
+  }
 
-  // Object item info returned by GetObjectInfo
-  final class ObjectInfo(
-      id: Short, // unique ID
-      gid: Short, // graphic ID (tile index)
-      flags: Short, // attributes (FLAG_FLIPX, FLAG_FLIPY, FLAG_PRIORITY)
-      x: Int, // horizontal position
-      y: Int, // vertical position
-      width: Int, // horizontal size
-      height: Int, // vertical size
-      _type: Byte, // type property
-      visible: Boolean, // visible property
-      name: String // name property
-  )
+  // Object item info returned by GetObjectInfo()
+  final class ObjectInfo {
+    var id: Short = _ // unique ID
+    var gid: Short = _ // graphic ID (tile index)
+    var flags: Short = _ // attributes (FLAG_FLIPX, FLAG_FLIPY, FLAG_PRIORITY)
+    var x: Int = _ // horizontal position
+    var y: Int = _ // vertical position
+    var width: Int = _ // horizontal size
+    var height: Int = _ // vertical size
+    var _type: Byte = _ // type property
+    var visible: Boolean = _ // visible property
+    var name: String = _ // name property
+  }
 
 // basic management
   @native def Init(
@@ -206,7 +202,11 @@ class Tilengine {
   // spritesets management
   @native def LoadSpriteset(name: String): Int
   @native def CloneSpriteset(src: Int): Int
-  @native def GetSpriteInfo(spriteset: Int, entry: Int, info: SpriteInfo): Boolean
+  @native def GetSpriteInfo(
+      spriteset: Int,
+      entry: Int,
+      info: SpriteInfo
+  ): Boolean
   @native def GetSpritesetPalette(spriteset: Int): Int
   @native def DeleteSpriteset(spriteset: Int): Boolean
 
@@ -231,8 +231,18 @@ class Tilengine {
   @native def CloneTilemap(src: Int): Int
   @native def GetTilemapRows(tilemap: Int): Int
   @native def GetTilemapCols(tilemap: Int): Int
-  @native def GetTilemapTile(tilemap: Int, row: Int, col: Int, tile: Tile): Boolean
-  @native def SetTilemapTile(tilemap: Int, row: Int, col: Int, tile: Tile): Boolean
+  @native def GetTilemapTile(
+      tilemap: Int,
+      row: Int,
+      col: Int,
+      tile: Tile
+  ): Boolean
+  @native def SetTilemapTile(
+      tilemap: Int,
+      row: Int,
+      col: Int,
+      tile: Tile
+  ): Boolean
   @native def CopyTiles(
       src: Int,
       srcrow: Int,
@@ -250,7 +260,13 @@ class Tilengine {
   @native def LoadPalette(filename: String): Int
   @native def ClonePalette(src: Int): Int
   @native def DeletePalette(palette: Int): Unit
-  @native def SetPaletteColor(palette: Int, color: Int, r: Byte, g: Byte, b: Byte): Unit
+  @native def SetPaletteColor(
+      palette: Int,
+      color: Int,
+      r: Byte,
+      g: Byte,
+      b: Byte
+  ): Unit
   @native def MixPalettes(src1: Int, src2: Int, dst: Int, f: Byte): Unit
 
   // bitmaps
@@ -269,7 +285,11 @@ class Tilengine {
   @native def SetLayer(nlayer: Int, tileset: Int, tilemap: Int): Boolean
   @native def SetLayerPalette(nlayer: Int, palette: Int): Boolean
   @native def SetLayerPosition(nlayer: Int, hstart: Int, vstart: Int): Boolean
-  @native def SetLayerScaling(nlayer: Int, xfactor: Float, yfactor: Float): Boolean
+  @native def SetLayerScaling(
+      nlayer: Int,
+      xfactor: Float,
+      yfactor: Float
+  ): Boolean
   @native def SetLayerAffineTransform(nlayer: Int, affine: Affine): Boolean
   @native def SetLayerTransform(
       layer: Int,
@@ -281,7 +301,13 @@ class Tilengine {
   ): Boolean
   @native def SetLayerBlendMode(nlayer: Int, mode: Int, factor: Byte): Boolean
   @native def SetLayerColumnOffset(nlayer: Int, offset: Array[Int]): Boolean
-  @native def SetLayerClip(nlayer: Int, x1: Int, y1: Int, x2: Int, y2: Int): Boolean
+  @native def SetLayerClip(
+      nlayer: Int,
+      x1: Int,
+      y1: Int,
+      x2: Int,
+      y2: Int
+  ): Boolean
   @native def DisableLayerClip(nlayer: Int): Boolean
   @native def ResetLayerMode(nlayer: Int): Boolean
   @native def DisableLayer(nlayer: Int): Boolean
@@ -312,12 +338,20 @@ class Tilengine {
   @native def GetSpriteCollision(nsprite: Int): Boolean
   @native def DisableSprite(nsprite: Int): Boolean
   @native def GetSpritePalette(nsprite: Int): Int
-  @native def EnableSpriteFlag(nsprite: Int, flag: Short, enable: Boolean): Boolean
+  @native def EnableSpriteFlag(
+      nsprite: Int,
+      flag: Short,
+      enable: Boolean
+  ): Boolean
   @native def SetFirstSprite(nsprite: Int): Boolean
   @native def SetNextSprite(nsprite: Int, next: Int): Boolean
   @native def EnableSpriteMasking(nsprite: Int, enable: Boolean): Boolean
   @native def SetSpritesMaskingRegion(top_line: Int, bottom_line: Int): Unit
-  @native def SetSpriteAnimation(nsprite: Int, sequence: Int, loop: Int): Boolean
+  @native def SetSpriteAnimation(
+      nsprite: Int,
+      sequence: Int,
+      loop: Int
+  ): Boolean
   @native def DisableSpriteAnimation(nsprite: Int): Boolean
 
   // sequences management
